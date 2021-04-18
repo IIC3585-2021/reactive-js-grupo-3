@@ -132,15 +132,13 @@ const check_colissions = () => {
     // Reviso las posiciones de los jugadores y el color del pixel
     // y: players.red.top, x: players.red.left
     // Si alguno es negro Choca
-    console.log(ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data)
-    console.log(ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100))
-    const check_left = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100)
-    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100)
-    const check_right = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100)
-    
-    const check_top = ctx.getImageData(players.red.left + 2, players.red.top - 10, 1, 10).data.some((value) => value < 100)
+    console.log(ctx.getImageData(players.red.left - 10, players.red.top - 10, 10, 2).data)
+    console.log(ctx.getImageData(players.red.left - 10, players.red.top - 10, 10, 2).data.some((value) => value < 100))
+    const check_top = !ctx.getImageData(players.red.left - 12, players.red.top - 10, 10, 2).data.some((value) => value < 100);
+    const check_left = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100);
+    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100);
+    const check_right = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100)
+    console.log('arriba:', check_top, 'abajo:', check_bottom, 'izquierda:', check_left, 'derecha:', check_right )
 
-    return check_left && check_bottom
+    return check_left && check_bottom && check_top
 };
-
-check_colissions()
