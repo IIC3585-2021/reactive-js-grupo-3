@@ -131,18 +131,10 @@ const check_colissions = () => {
     const check_left = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100);
     const check_top = !ctx.getImageData(players.red.left - 12, players.red.top - 10, 10, 2).data.some((value) => value < 100);
 
-    console.log('arriba:', check_top, 'abajo:', check_bottom, 'izquierda:', check_left, 'derecha:', check_right)
-    if (keys[3].value === true && check_right === false) {
-        keys[3].value = false
-    }
-    if (keys[0].value === true && check_bottom === false) {
-        keys[0].value = false
-    }
-    // if (keys[1].value === true && check_top === false) {
-    //     keys[1].value = false
-    // }
+    keys[0].value = (keys[0].value === true && check_bottom === false) ? false : keys[0].value
     keys[1].value = (keys[1].value === true && check_top === false) ? false : keys[1].value
     keys[2].value = (keys[2].value === true && check_left === false) ? false : keys[2].value
+    keys[3].value = (keys[3].value === true && check_right === false) ? false : keys[3].value
 
     return check_right && check_bottom
 };
