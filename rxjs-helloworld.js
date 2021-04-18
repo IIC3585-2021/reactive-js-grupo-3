@@ -10,10 +10,10 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // Función encargada de cargar el laberinto.
-const load_image  = () => {
+const load_image = () => {
     var maze = new Image();
     maze.src = 'maze2.jpg';
-    maze.onload = function(){
+    maze.onload = function() {
         ctx.drawImage(maze, 0, 0, 560, 560);
     }
 };
@@ -126,14 +126,26 @@ const check_colissions = () => {
     // Si alguno es negro Choca
     console.log(ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data)
     console.log(ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100))
-    const check_left = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100)
-    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100)
-    const check_right = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100)
-    
-    const check_top = ctx.getImageData(players.red.left + 2, players.red.top - 10, 1, 10).data.some((value) => value < 100)
+    const check_right = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100);
+    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100);
+    const check_left = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100);
+    const check_top = !ctx.getImageData(players.red.left - 12, players.red.top - 10, 10, 2).data.some((value) => value < 100);
 
-    return check_left && check_bottom
-};  
+    console.log('arriba:', check_top, 'abajo:', check_bottom, 'izquierda:', check_left, 'derecha:', check_right)
+    if (keys[3].value === true && check_right === false) {
+        keys[3].value = false
+    }
+    if (keys[0].value === true && check_bottom === false) {
+        keys[0].value = false
+    }
+    // if (keys[1].value === true && check_top === false) {
+    //     keys[1].value = false
+    // }
+    keys[1].value = (keys[1].value === true && check_top === false) ? false : keys[1].value
+    keys[2].value = (keys[2].value === true && check_left === false) ? false : keys[2].value
+
+    return check_right && check_bottom
+};
 
 const move = (key) => {
     switch (key) {
@@ -175,6 +187,7 @@ const move = (key) => {
 
 moveObservable.subscribe(() => {
     keys.map((key) => {
+        check_colissions();
         if (key.value === true) {
             move(key.name)
         }
