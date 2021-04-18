@@ -1,0 +1,15 @@
+#red {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+#blue {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 30px;
+    left: 100px;
+}
