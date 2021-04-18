@@ -132,10 +132,6 @@ const check_colissions = () => {
     const check_right = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100)
     console.log('arriba:', check_top, 'abajo:', check_bottom, 'izquierda:', check_left, 'derecha:', check_right )
 
-<<<<<<< HEAD
-    return check_left && check_bottom && check_top
-};
-=======
     return check_left && check_bottom
 };  
 
@@ -184,4 +180,3 @@ moveObservable.subscribe(() => {
         }
     })
 })
->>>>>>> c004a9d283e63121573192f72504902d6d5a71da
