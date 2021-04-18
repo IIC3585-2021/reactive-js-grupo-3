@@ -1,14 +1,14 @@
 #red {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 25px;
+    left: 25px;
 }
 
 #blue {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     position: absolute;
     top: 30px;
     left: 100px;
