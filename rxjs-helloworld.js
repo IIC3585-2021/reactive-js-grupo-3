@@ -124,15 +124,17 @@ const check_colissions = () => {
     // Reviso las posiciones de los jugadores y el color del pixel
     // y: players.red.top, x: players.red.left
     // Si alguno es negro Choca
-    const check_right = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100);
-    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100);
-    const check_left = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100);
-    const check_top = !ctx.getImageData(players.red.left - 12, players.red.top - 10, 10, 2).data.some((value) => value < 100);
 
-    const check_d = !ctx.getImageData(players.blue.left, players.blue.top - 10, 5, 10).data.some((value) => value < 100);
-    const check_s = !ctx.getImageData(players.blue.left - 10, players.blue.top, 10, 5).data.some((value) => value < 100);
-    const check_a = !ctx.getImageData(players.blue.left - 12, players.blue.top, 5, 10).data.some((value) => value < 100);
-    const check_w = !ctx.getImageData(players.blue.left - 12, players.blue.top - 10, 10, 2).data.some((value) => value < 100);
+    const check_right = !ctx.getImageData(players.red.left + 2, players.red.top - 7, 5, 7).data.some((value) => value < 100);
+    const check_left = !ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data.some((value) => value < 100);
+    const check_bottom = !ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data.some((value) => value < 100);
+    const check_top = !ctx.getImageData(players.red.left - 8, players.red.top - 12, 7, 5).data.some((value) => value < 100);
+    
+
+    const check_d = !ctx.getImageData(players.blue.left + 2, players.blue.top - 7, 5, 7).data.some((value) => value < 100);
+    const check_a = !ctx.getImageData(players.blue.left - 12, players.blue.top - 7, 5, 7).data.some((value) => value < 100);
+    const check_s = !ctx.getImageData(players.blue.left - 8, players.blue.top + 2, 7, 5).data.some((value) => value < 100);
+    const check_w = !ctx.getImageData(players.blue.left - 8, players.blue.top - 12, 7, 5).data.some((value) => value < 100);
 
     const checks = [check_bottom, check_top, check_left, check_right, check_s, check_w, check_a, check_d]
     keys.map((key) => {
