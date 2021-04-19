@@ -227,15 +227,6 @@ const check_colissions = () => {
     keys.map((key) => {
         key.value = (key.value === true && checks[keys.indexOf(key)] === false) ? false : key.value
     });
-    // keys[0].value = (keys[0].value === true && check_bottom === false) ? false : keys[0].value
-    // keys[1].value = (keys[1].value === true && check_top === false) ? false : keys[1].value
-    // keys[2].value = (keys[2].value === true && check_left === false) ? false : keys[2].value
-    // keys[3].value = (keys[3].value === true && check_right === false) ? false : keys[3].value
-
-    // keys[0].value = (keys[0].value === true && check_bottom === false) ? false : keys[0].value
-    // keys[1].value = (keys[1].value === true && check_top === false) ? false : keys[1].value
-    // keys[2].value = (keys[2].value === true && check_left === false) ? false : keys[2].value
-    // keys[3].value = (keys[3].value === true && check_right === false) ? false : keys[3].value
 };
 
 const move = (key) => {
