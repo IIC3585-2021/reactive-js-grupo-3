@@ -2,14 +2,18 @@
     width: 10px;
     height: 10px;
     position: absolute;
-    top: 25px;
-    left: 25px;
+    top: 20px;
+    left: 74px;
 }
 
 #blue {
     width: 10px;
     height: 10px;
     position: absolute;
-    top: 30px;
-    left: 100px;
+    top: 20px;
+    left: 87px;
+}
+
+#gameover {
+    display: none;
 }

@@ -1,11 +1,10 @@
 const { fromEvent, Observable } = rxjs;
 const { map } = rxjs.operators;
 
-const button = document.querySelector("#myButton");
-const content = document.querySelector("#myContent");
 const maze = document.getElementById("maze");
 const red = document.getElementById("red");
 const blue = document.getElementById("blue");
+const gameover = document.getElementById("gameover");
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -24,12 +23,12 @@ load_image()
 
 const players = {
     'red': {
-        top: 25,
-        left: 25
+        top: 20,
+        left: 74
     },
     'blue': {
-        top: 30,
-        left: 100
+        top: 20,
+        left: 87
     }
 }
 
@@ -129,7 +128,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.red.left + 2, players.red.top - 7, 5, 7).data;
     var check_right = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
             found = true;
             break;
@@ -139,7 +138,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data;
     var check_bottom = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
             found = true;
             break;
@@ -149,16 +148,21 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data
     var check_left = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
             found = true;
             break;
         }
     }
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             red_won = true;
             console.log("Ganó el rojo!")
+            gameover.style.display = "block";
+            blue.style.display = "none";
+            red.style.display = "none";
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, 600, 600);
             break;
         }
     }
@@ -166,7 +170,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.red.left - 8, players.red.top - 12, 7, 5).data
     var check_top = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
             found = true;
             break;
@@ -178,7 +182,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.blue.left + 2, players.blue.top - 7, 5, 7).data
     var check_d = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
             found = true;
             break;
@@ -188,16 +192,21 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top + 2, 7, 5).data
     var check_s = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
             found = true;
             break;
         }
     }
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             blue_won = true;
             console.log("Ganó el azul!")
+            gameover.style.display = "block";
+            blue.style.display = "none";
+            red.style.display = "none";
+            ctx.fillStyle = "#FF0000";
+            ctx.fillRect(0, 0, 150, 75);
             break;
         }
     }
@@ -205,7 +214,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.blue.left - 12, players.blue.top - 7, 5, 7).data
     var check_a = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
             found = true;
             break;
@@ -215,7 +224,7 @@ const check_colissions = () => {
     var found = false;
     var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top - 12, 7, 5).data
     var check_w = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
+    for (i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
             found = true;
             break;
