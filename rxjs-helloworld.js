@@ -58,6 +58,132 @@ const moveObservable = new Observable((observer) => {
     }, 100);
 });
 
+const check_red_pixel = (sx, sy, sw, sh) => {
+    let r_match = false;
+    let g_match = false;
+    let b_match = false;
+    const r = 140;
+    const g = 100;
+    const b = 100;
+    let result = true;
+    let pixels = ctx.getImageData(players.red.left + sx, players.red.top + sy, sw, sh).data;
+    pixels.forEach((element, i) => {
+        if ((i+1)%4 === 1) {
+            if (element > r || element > 100) {
+                r_match = true;
+            }
+        }
+        else if ((i+1)%4 === 2){
+            if (element < g || element > 100) {
+                g_match = true;
+            }
+        }
+        else if ((i+1)%4 === 3){
+            if (element < b || element > 100) {
+                b_match = true;
+            }
+        }
+        else if ((i+1)%4 === 0) {
+            if (!r_match || !g_match || !b_match){
+                result = false;
+                return;
+            }
+            r_match = false;
+            g_match = false;
+            b_match = false;
+        }
+    });
+    return result;
+}
+
+const check_blue_pixel = (sx, sy, sw, sh) => {
+    let r_match = false
+    let g_match = false
+    let b_match = false
+    const r = 70
+    const g = 50
+    const b = 180
+    let result = true;
+    let pixels = ctx.getImageData(players.blue.left + sx, players.blue.top + sy, sw, sh).data;
+    pixels.forEach((element, i) => {
+        if ((i+1)%4 === 1) {
+            if (element < r || element > 100) {
+                r_match = true;
+            }
+        }
+        else if ((i+1)%4 === 2){
+            if (element > g || element > 100) {
+                g_match = true;
+            }
+        }
+        else if ((i+1)%4 === 3){
+            if (element > b || element > 100) {
+                b_match = true;
+            }
+        }
+        else if ((i+1)%4 === 0) {
+            if (!r_match || !g_match || !b_match){
+                result = false;
+                return;
+            }
+            r_match = false;
+            g_match = false;
+            b_match = false;
+        }
+    });
+    return result;
+}   
+
+const check_green_pixel = (player) => {
+    let r_match = false
+    let g_match = false
+    let b_match = false
+    const r = 50
+    const g = 200
+    const b = 50
+    let result = false;
+    let pixels;
+    let sx = -12;
+    let sy = -7;
+    let sw = 5;
+    let sh = 7;
+    if (player === "red"){
+        pixels = ctx.getImageData(players.red.left + sx, players.red.top - sy, sw, sh).data;
+    }
+    else if (player === "blue"){
+        pixels = ctx.getImageData(players.blue.left + sx, players.blue.top - sy, sw, sh).data;
+    }
+    pixels.forEach((element, i) => {
+        if ((i+1)%4 === 1) {
+            if (element < r) {
+                r_match = true;
+            }
+        }
+        else if ((i+1)%4 === 2){
+            if (element > g) {
+                g_match = true;
+            }
+        }
+        else if ((i+1)%4 === 3){
+            if (element < b) {
+                b_match = true;
+            }
+        }
+        else if ((i+1)%4 === 0) {
+            if (r_match && g_match && b_match){
+                console.log(player)
+                console.log("ganó")
+                result = true;
+                return;
+            }
+            r_match = false;
+            g_match = false;
+            b_match = false;
+        }
+    });
+    return result;
+}
+
 keydown.subscribe((key) => {
     switch (key) {
         case 'ArrowDown':
@@ -116,6 +242,43 @@ keyup.subscribe((key) => {
     }
 });
 
+const check_movement = (player, direction) => {
+    let sx;
+    let sy;
+    let sw;
+    let sh;
+    if (direction === "up"){
+        sx = -8;
+        sy = -12;
+        sw = 7;
+        sh = 5;
+    }
+    else if (direction === "down"){
+        sx = -8;
+        sy = 2;
+        sw = 7;
+        sh = 5;
+    }
+    else if (direction === "left"){
+        sx = -12;
+        sy = -7;
+        sw = 5;
+        sh = 7;
+    }
+    else if (direction === "right"){
+        sx = 2;
+        sy = -7;
+        sw = 5;
+        sh = 7;
+    }
+    if (player === "red"){
+        return check_red_pixel(sx, sy, sw, sh)
+    }
+    else if (player === "blue"){
+        return check_blue_pixel(sx, sy, sw, sh)
+    }
+}
+
 
 
 const check_colissions = () => {
@@ -125,103 +288,17 @@ const check_colissions = () => {
     // Blue wall: rgba(0,103,208,255)
     // Red wall: rgba(255,39,39,255)
     // Green wall: rgba(0,212,0,255)
-    var red_won = false;
-    var found = false;
-    var pixels = ctx.getImageData(players.red.left + 2, players.red.top - 7, 5, 7).data;
-    var check_right = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
-            found = true;
-            break;
-        }
-    }
-    check_right = check_right || found
-    var found = false;
-    var pixels = ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data;
-    var check_bottom = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
-            found = true;
-            break;
-        }
-    }
-    check_bottom = check_bottom || found
-    var found = false;
-    var pixels = ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data
-    var check_left = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
-            found = true;
-            break;
-        }
-    }
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
-            red_won = true;
-            console.log("Ganó el rojo!")
-            break;
-        }
-    }
-    check_left = check_left || found
-    var found = false;
-    var pixels = ctx.getImageData(players.red.left - 8, players.red.top - 12, 7, 5).data
-    var check_top = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
-            found = true;
-            break;
-        }
-    }
-    check_top = check_top || found
+    let red_won = check_green_pixel("red");
+    let blue_won = check_green_pixel("blue");
+    let check_bottom = check_movement("red", "down");
+    let check_top = check_movement("red", "up");
+    let check_left = check_movement("red", "left");
+    let check_right = check_movement("red", "right");
 
-    var blue_won = false;
-    var found = false;
-    var pixels = ctx.getImageData(players.blue.left + 2, players.blue.top - 7, 5, 7).data
-    var check_d = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
-            found = true;
-            break;
-        }
-    }
-    check_d = check_d || found
-    var found = false;
-    var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top + 2, 7, 5).data
-    var check_s = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
-            found = true;
-            break;
-        }
-    }
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
-            blue_won = true;
-            console.log("Ganó el azul!")
-            break;
-        }
-    }
-    check_s = check_s || found
-    var found = false;
-    var pixels = ctx.getImageData(players.blue.left - 12, players.blue.top - 7, 5, 7).data
-    var check_a = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
-            found = true;
-            break;
-        }
-    }
-    check_a = check_a || found
-    var found = false;
-    var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top - 12, 7, 5).data
-    var check_w = !pixels.some((value) => value < 100);
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
-            found = true;
-            break;
-        }
-    }
-    check_w = check_w || found
+    let check_s = check_movement("blue", "down");
+    let check_w = check_movement("blue", "up");
+    let check_a = check_movement("blue", "left");
+    let check_d = check_movement("blue", "right");
 
     const checks = [check_bottom, check_top, check_left, check_right, check_s, check_w, check_a, check_d]
     keys.map((key) => {
