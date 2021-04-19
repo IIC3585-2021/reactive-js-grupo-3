@@ -59,7 +59,6 @@ const moveObservable = new Observable((observer) => {
 });
 
 keydown.subscribe((key) => {
-    console.log(key)
     switch (key) {
         case 'ArrowDown':
             keys[0].value = true
@@ -89,7 +88,6 @@ keydown.subscribe((key) => {
 });
 
 keyup.subscribe((key) => {
-    console.log(key)
     switch (key) {
         case 'ArrowDown':
             keys[0].value = false
@@ -124,15 +122,106 @@ const check_colissions = () => {
     // Reviso las posiciones de los jugadores y el color del pixel
     // y: players.red.top, x: players.red.left
     // Si alguno es negro Choca
-    const check_right = !ctx.getImageData(players.red.left, players.red.top - 10, 5, 10).data.some((value) => value < 100);
-    const check_bottom = !ctx.getImageData(players.red.left - 10, players.red.top, 10, 5).data.some((value) => value < 100);
-    const check_left = !ctx.getImageData(players.red.left - 12, players.red.top, 5, 10).data.some((value) => value < 100);
-    const check_top = !ctx.getImageData(players.red.left - 12, players.red.top - 10, 10, 2).data.some((value) => value < 100);
+    // Blue wall: rgba(0,103,208,255)
+    // Red wall: rgba(255,39,39,255)
+    // Green wall: rgba(0,212,0,255)
+    var red_won = false;
+    var found = false;
+    var pixels = ctx.getImageData(players.red.left + 2, players.red.top - 7, 5, 7).data;
+    var check_right = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
+            found = true;
+            break;
+        }
+    }
+    check_right = check_right || found
+    var found = false;
+    var pixels = ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data;
+    var check_bottom = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
+            found = true;
+            break;
+        }
+    }
+    check_bottom = check_bottom || found
+    var found = false;
+    var pixels = ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data
+    var check_left = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
+            found = true;
+            break;
+        }
+    }
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
+            red_won = true;
+            console.log("Ganó el rojo!")
+            break;
+        }
+    }
+    check_left = check_left || found
+    var found = false;
+    var pixels = ctx.getImageData(players.red.left - 8, players.red.top - 12, 7, 5).data
+    var check_top = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
+            found = true;
+            break;
+        }
+    }
+    check_top = check_top || found
 
-    const check_d = !ctx.getImageData(players.blue.left, players.blue.top - 10, 5, 10).data.some((value) => value < 100);
-    const check_s = !ctx.getImageData(players.blue.left - 10, players.blue.top, 10, 5).data.some((value) => value < 100);
-    const check_a = !ctx.getImageData(players.blue.left - 12, players.blue.top, 5, 10).data.some((value) => value < 100);
-    const check_w = !ctx.getImageData(players.blue.left - 12, players.blue.top - 10, 10, 2).data.some((value) => value < 100);
+    var blue_won = false;
+    var found = false;
+    var pixels = ctx.getImageData(players.blue.left + 2, players.blue.top - 7, 5, 7).data
+    var check_d = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
+            found = true;
+            break;
+        }
+    }
+    check_d = check_d || found
+    var found = false;
+    var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top + 2, 7, 5).data
+    var check_s = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
+            found = true;
+            break;
+        }
+    }
+    check_s = check_s || found
+    var found = false;
+    var pixels = ctx.getImageData(players.blue.left - 12, players.blue.top - 7, 5, 7).data
+    var check_a = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
+            found = true;
+            break;
+        }
+    }
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
+            blue_won = true;
+            console.log("Ganó el azul!")
+            break;
+        }
+    }
+    check_a = check_a || found
+    var found = false;
+    var pixels = ctx.getImageData(players.blue.left - 8, players.blue.top - 12, 7, 5).data
+    var check_w = !pixels.some((value) => value < 100);
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
+            found = true;
+            break;
+        }
+    }
+    check_w = check_w || found
 
     const checks = [check_bottom, check_top, check_left, check_right, check_s, check_w, check_a, check_d]
     keys.map((key) => {
@@ -147,8 +236,6 @@ const check_colissions = () => {
     // keys[1].value = (keys[1].value === true && check_top === false) ? false : keys[1].value
     // keys[2].value = (keys[2].value === true && check_left === false) ? false : keys[2].value
     // keys[3].value = (keys[3].value === true && check_right === false) ? false : keys[3].value
-
-    return check_right && check_bottom
 };
 
 const move = (key) => {
