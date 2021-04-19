@@ -194,6 +194,13 @@ const check_colissions = () => {
             break;
         }
     }
+    for (i=0; i < pixels.length; i+=4){
+        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
+            blue_won = true;
+            console.log("Ganó el azul!")
+            break;
+        }
+    }
     check_s = check_s || found
     var found = false;
     var pixels = ctx.getImageData(players.blue.left - 12, players.blue.top - 7, 5, 7).data
@@ -201,13 +208,6 @@ const check_colissions = () => {
     for (i=0; i < pixels.length; i+=4){
         if (pixels[i] < 50 && pixels[i + 1] > 80 && pixels[i + 2] > 200) {
             found = true;
-            break;
-        }
-    }
-    for (i=0; i < pixels.length; i+=4){
-        if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
-            blue_won = true;
-            console.log("Ganó el azul!")
             break;
         }
     }
