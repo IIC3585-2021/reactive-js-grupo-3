@@ -18,6 +18,10 @@
     justify-self: center;
 }
 
-#gameover {
+#bluewinner {
+    display: none;
+}
+
+#redwinner {
     display: none;
 }

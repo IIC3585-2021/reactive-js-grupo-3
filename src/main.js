@@ -4,7 +4,8 @@ const { map } = rxjs.operators;
 const maze = document.getElementById("maze");
 const red = document.getElementById("red");
 const blue = document.getElementById("blue");
-const gameover = document.getElementById("gameover");
+const redwinner = document.getElementById("redwinner");
+const bluewinner = document.getElementById("bluewinner");
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
