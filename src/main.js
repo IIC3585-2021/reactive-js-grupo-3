@@ -11,16 +11,13 @@ const ctx = canvas.getContext('2d');
 // Función encargada de cargar el laberinto.
 const load_image = () => {
     var maze = new Image();
-    maze.src = 'maze2.jpg';
+    maze.src = 'src/assets/maze.jpg';
     maze.onload = function() {
         ctx.drawImage(maze, 0, 0, 560, 560);
     }
 };
 
-// Cargar canvas con el laberinto.
-load_image()
-
-
+// Diccionario con información de los jugadores.
 const players = {
     'red': {
         top: 20,
@@ -30,8 +27,9 @@ const players = {
         top: 20,
         left: 87
     }
-}
+};
 
+// Información de las teclas utilizadas por el juego.
 const keys = [
     { name: 'ArrowDown', value: false },
     { name: 'ArrowUp', value: false },
@@ -41,8 +39,9 @@ const keys = [
     { name: 'w', value: false },
     { name: 'a', value: false },
     { name: 'd', value: false }
-]
+];
 
+// Manejo de movimientos.
 const keydown = fromEvent(document, 'keydown').pipe(
     map(event => event.code),
 );
@@ -115,15 +114,14 @@ keyup.subscribe((key) => {
     }
 });
 
-
-
 const check_colissions = () => {
-    // Reviso las posiciones de los jugadores y el color del pixel
-    // y: players.red.top, x: players.red.left
-    // Si alguno es negro Choca
-    // Blue wall: rgba(0,103,208,255)
-    // Red wall: rgba(255,39,39,255)
-    // Green wall: rgba(0,212,0,255)
+    /** Función que revisa las colisiones de los jugadores.
+     * Se revisa el color del pixel y se decide si es posible el movimiento del jugador.
+     * Muralla Negra: No se puede pasar.
+     * Muralla Roja: Solo jugador rojo puede traspasar. Código color: rgba(255,39,39,255).
+     * Muralla Azul: Solo jugador azul puede traspasar. Código color: rgba(0,103,208,255).
+     * Muralla Verda: Jugador gana el juego. Código color: Código color: rgba(0,212,0,255).
+    */
     var red_won = false;
     var found = false;
     var pixels = ctx.getImageData(players.red.left + 2, players.red.top - 7, 5, 7).data;
@@ -155,14 +153,10 @@ const check_colissions = () => {
         }
     }
     for (i = 0; i < pixels.length; i += 4) {
+        // Ganador jugador rojo
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             red_won = true;
-            console.log("Ganó el rojo!")
-            gameover.style.display = "block";
-            blue.style.display = "none";
-            red.style.display = "none";
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fillRect(0, 0, 600, 600);
+            end_game("red")
             break;
         }
     }
@@ -199,14 +193,10 @@ const check_colissions = () => {
         }
     }
     for (i = 0; i < pixels.length; i += 4) {
+        // Ganador jugador azul.
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             blue_won = true;
-            console.log("Ganó el azul!")
-            gameover.style.display = "block";
-            blue.style.display = "none";
-            red.style.display = "none";
-            ctx.fillStyle = "#FF0000";
-            ctx.fillRect(0, 0, 150, 75);
+            end_game("blue");
             break;
         }
     }
@@ -276,6 +266,19 @@ const move = (key) => {
 
 }
 
+const end_game = (winner) => {
+    // Falta asociar las imagenes a los gameover correspondientes
+    blue.style.display = "none";
+    red.style.display = "none";
+    let game_over = new Image();
+    game_over.src = 'src/assets/gameover.jpg';
+    game_over.onload = function() {
+        ctx.drawImage(game_over, 0, 0, 560, 560);
+    }
+}
+
+// Juego 
+load_image()
 moveObservable.subscribe(() => {
     keys.map((key) => {
         check_colissions();
