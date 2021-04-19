@@ -4,7 +4,8 @@ const { map } = rxjs.operators;
 const maze = document.getElementById("maze");
 const red = document.getElementById("red");
 const blue = document.getElementById("blue");
-const gameover = document.getElementById("gameover");
+const redwinner = document.getElementById("redwinner");
+const bluewinner = document.getElementById("bluewinner");
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -158,7 +159,7 @@ const check_colissions = () => {
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             red_won = true;
             console.log("Ganó el rojo!")
-            gameover.style.display = "block";
+            redwinner.style.display = "block";
             blue.style.display = "none";
             red.style.display = "none";
             ctx.fillStyle = "#FFFFFF";
@@ -202,10 +203,10 @@ const check_colissions = () => {
         if (pixels[i] < 50 && pixels[i + 1] > 200 && pixels[i + 2] < 50) {
             blue_won = true;
             console.log("Ganó el azul!")
-            gameover.style.display = "block";
+            bluewinner.style.display = "block";
             blue.style.display = "none";
             red.style.display = "none";
-            ctx.fillStyle = "#FF0000";
+            ctx.fillStyle = "#FFFFFF";
             ctx.fillRect(0, 0, 150, 75);
             break;
         }
