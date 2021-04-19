@@ -267,12 +267,13 @@ const move = (key) => {
 
 }
 
+// Función que modifica la vista del juego cuando un jugador gana.
 const end_game = (winner) => {
     // Falta asociar las imagenes a los gameover correspondientes
     blue.style.display = "none";
     red.style.display = "none";
     let game_over = new Image();
-    game_over.src = 'src/assets/gameover.jpg';
+    game_over.src = winner === 'blue' ? 'src/assets/bluewinner.jpg': 'src/assets/redwinner';
     game_over.onload = function() {
         ctx.drawImage(game_over, 0, 0, 560, 560);
     }
