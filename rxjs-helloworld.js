@@ -137,7 +137,7 @@ const check_colissions = () => {
     }
     check_right = check_right || found
     var found = false;
-    var pixels = ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data;
+    var pixels = ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data;
     var check_bottom = !pixels.some((value) => value < 100);
     for (i=0; i < pixels.length; i+=4){
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
@@ -147,7 +147,7 @@ const check_colissions = () => {
     }
     check_bottom = check_bottom || found
     var found = false;
-    var pixels = ctx.getImageData(players.red.left - 8, players.red.top + 2, 7, 5).data
+    var pixels = ctx.getImageData(players.red.left - 12, players.red.top - 7, 5, 7).data
     var check_left = !pixels.some((value) => value < 100);
     for (i=0; i < pixels.length; i+=4){
         if (pixels[i] > 200 && pixels[i + 1] < 50 && pixels[i + 2] < 50) {
